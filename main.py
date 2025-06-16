@@ -35,8 +35,6 @@ def gerar_resposta_gemini(prompt_completo):
 st.sidebar.title("Informações do aplicativo")
 st.sidebar.write("Como usar?")
 
-# Widgets na sidebar
-ativo = st.sidebar.checkbox("Ativar recurso")
 
 # Exibir informações na sidebar
 st.sidebar.info("ℹ️ Preencha todas as informações pedidas, é importante!")
@@ -61,8 +59,9 @@ turno = st.radio(
 
 turma = st.selectbox(
     "Selecione a turma:",
-    ["2° ano Fundamental", "3° ano Fundamental", "4° ano",   "5° ano", "6° ano", "7° ano", "8° ano", "9° ano",
-        "1° ano Ensino Médio", "2° ano Ensino Médio", "3° ano Ensino Médio"]
+    ["2° ano Fundamental", "3° ano Fundamental", "4° ano Fundamental", "5° ano Fundamental",
+     "6° ano Fundamental", "7° ano Fundamental", "8° ano Fundamental", "9° ano Fundamental",
+     "1° ano Ensino Médio", "2° ano Ensino Médio", "3° ano Ensino Médio"]
 )
 
 if "Fundamental" in turma:
