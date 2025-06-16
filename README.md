@@ -36,17 +36,27 @@
 * pip install streamlit
 * pip install google.generativeai
 * pip freeze > requirements.txt
+* pip install python-dotenv
+
 ## Mac:
 * pip3 list
 * pip3 install streamlit
 * pip3 install google.generativeai
-* pip freeze > requirements.txt
+* pip3 freeze > requirements.txt
+* pip3 install python-dotenv
+
 
 # Verificação da instalação
 * streamlit hello
 
 # Executando uma aplicação
 * streamlit run main.py
+  
+# Crie uma chave API do Google Gemini
+* https://aistudio.google.com/app/apikey?hl=pt-br
+## Esconda sua chave:
+* Crie um file . env
+* Escreva sua chave nela
 
 # Uso:
 * Ao preencher o formúlario, a IA irá gerar uma solução ao seu problema,  de acordo com a sua idade, turno e matéria selecionada, além de dicas de estudo.
