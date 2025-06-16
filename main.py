@@ -47,58 +47,95 @@ st.sidebar.warning("⚠️ Atenção: verifique os dados")
 st.sidebar.error("❌ Erro encontrado")
 
 # Título do aplicativo
-st.title("Exercício: Planejador de Roteiro de Viagem Básico com IA ✈️")
-st.markdown("Descreva sua viagem ideal e deixe a IA ajudar com o planejamento!")
+st.title("Educa Ia 📚")
+st.header("Descreva sua duvida e deixe a IA ajudar com o seu estudo!")
+st.subheader("Preencha o formulário a seguir para realizar sua pergunta:")
+
 
 
 # Entradas do usuário
-destino = st.text_input("Qual o seu destino principal?")
-duracao_dias = st.number_input("Duração da viagem (em dias):", min_value=1, max_value=30, value=3, step=1)
-
-interesses_opcoes = [
-    "História e Cultura", "Natureza e Paisagens", "Gastronomia Local",
-    "Praias e Relaxamento", "Aventura e Esportes", "Vida Noturna", "Compras", "Arte e Museus"
-]
-interesses_selecionados = st.multiselect(
-    "Quais são seus principais interesses na viagem?",
-    interesses_opcoes,
-    default=[]
+nome = st.text_input("Qual é o seu nome?")
+idade = st.number_input("Informe a idade:", min_value=1, max_value=17, value=3, step=1)
+turno = st.radio(
+    "Qual período do dia é a sua aula?",
+    ["Manhã", "Tarde", "Noite"]
 )
 
-ritmo_viagem = st.selectbox(
-    "Qual o ritmo desejado para a viagem?",
-    ["Relaxado (poucas atividades por dia)", "Moderado (equilíbrio entre atividades e descanso)", "Intenso (aproveitar ao máximo cada momento)"]
+turma = st.selectbox(
+    "Selecione a turma:",
+    ["2° ano Fundamental", "3° ano Fundamental", "4° ano",   "5° ano", "6° ano", "7° ano", "8° ano", "9° ano",
+        "1° ano Ensino Médio", "2° ano Ensino Médio", "3° ano Ensino Médio"]
 )
 
-tipo_orcamento = st.radio(
-    "Qual o seu tipo de orçamento para atividades e alimentação?",
-    ["Econômico (foco em opções gratuitas ou de baixo custo)", "Médio (confortável, buscando bom custo-benefício)", "Luxo (experiências premium, sem muita preocupação com gastos)"]
-)
-
-observacoes_especiais = st.text_area(
-    "Observações ou pedidos especiais:",
-    placeholder="Ex: viajando com crianças, prefiro transporte público, gostaria de 1 dia livre, foco em fotografia..."
-)
-
-if st.button("Gerar Sugestão de Roteiro"):
-    if not destino:
-        st.warning("Por favor, informe o destino da viagem.")
-    elif not interesses_selecionados:
-        st.warning("Por favor, selecione pelo menos um interesse para a viagem.")
+if "Fundamental" in turma:
+    ano = int(turma.split("°")[0])
+    if 2 <= ano <= 5:
+        materias_opcoes = [
+            "Língua Portuguesa", "Matemática", "Ciências", "História", "Geografia",
+            "Arte", "Educação Física", "Música", "Inglês", "Teatro",
+            "Tecnologia Educacional", "Psicomotricidade Relacional", "Formação Pessoal e Social"
+        ]
+    elif 6 <= ano <= 9:
+        materias_opcoes = [
+            "Língua Portuguesa", "Matemática", "Ciências", "História", "Geografia",
+            "Arte", "Educação Física", "Inglês", "Espanhol",
+            "Tecnologia Educacional", "Projetos", "Líder em Mim"
+        ]
     else:
-        interesses_str = ", ".join(interesses_selecionados)
+        materias_opcoes = []
+elif "Ensino Médio" in turma:
+    materias_opcoes = [
+        "Língua Portuguesa", "Literatura", "Inglês", "História", "Geografia", "Filosofia",
+        "Sociologia", "Matemática", "Física", "Química", "Biologia",
+        "Artes", "Educação Física", "Espanhol", "Projeto de Vida", "Oficina de Textos"
+    ]
+else:
+    materias_opcoes = []
+
+materias = st.multiselect(
+    "Selecione as matérias:",
+    materias_opcoes
+)
+genero = st.radio("Gênero:", ["Masculino", "Feminino", "Outro"])
+
+# Upload de arquivo único
+arquivo = st.file_uploader("Envie sua declaração de estudante", type=['csv', 'txt', 'xlsx'])
+
+if arquivo is not None:
+    # Processar arquivo CSV
+    import pandas as pd
+    df = pd.read_csv(arquivo)
+    st.dataframe(df)
+if st.button("Clique aqui"):
+    st.write("Botão foi clicado!")
+
+aceito = st.checkbox("Eu aceito os termos")
+
+
+duvida = st.text_area(
+    "Digite sua dúvida:",
+    placeholder="Ex: Quantos países existem na America do Sul, como eu realizo uma equação..."
+)
+
+if st.button("Gerar um recurso para retirar duvida"):
+    if not duvida:
+        st.warning("Por favor, informe a  materia.")
+    elif not materias:
+        st.warning("Por favor, selecione pelo menos uma materia.")
+    else:
+        materias_str = ", ".join(materias)
 
         prompt_aluno = (
-            f"Preciso de ajuda para planejar um roteiro de viagem básico. Meu destino principal é '{destino}'.\n"
-            f"A viagem terá duração de {duracao_dias} dias.\n"
-            f"Meus principais interesses são: {interesses_str}.\n"
-            f"O ritmo da viagem que desejo é: '{ritmo_viagem}'.\n"
-            f"Meu orçamento para atividades e alimentação pode ser considerado: '{tipo_orcamento}'.\n"
-            f"Observações e pedidos especiais: '{observacoes_especiais if observacoes_especiais else 'Nenhuma observação especial.'}'\n\n"
-            f"Com base nessas informações, por favor, sugira um esboço de roteiro com atividades e/ou pontos turísticos. "
-            f"Pode ser um resumo geral de atividades possíveis ou uma sugestão para cada dia. "
-            f"Tente priorizar os interesses mencionados e adequar as sugestões ao perfil da viagem. "
-            f"Gostaria de ideias práticas e, se possível, algumas dicas locais ou tipos de experiências únicas relacionadas ao destino e aos meus interesses. "
+            f"Escreva o nome do aluno '{nome}'.\n"
+            f"A sua idade é {idade}.\n"
+            f"Seu turno é: {turno}.\n"
+            f"Sua turma é: '{turma}'.\n"
+            f"A materia ou as materias escolhidas foram: '{materias}'.\n"
+            f"Duvida do aluno '{duvida if duvida else 'Nenhuma dúvida inserida.'}'\n\n"
+            f"Com base nessas informações, por favor, dê uma explicação ao usuário "
+            f"Pode ser um resumo geral da duvida. "
+            f"Dê dicas de como o aluno pode estudar com base no turno dele. "
+            f"Gostaria de uma forma clara para explicar o estudante com base na idade dele sobre o assunto. "
             f"Apresente a resposta de forma organizada."
         )
 
@@ -107,11 +144,11 @@ if st.button("Gerar Sugestão de Roteiro"):
         st.text_area("",prompt_aluno, height=250)
         st.markdown("---")
 
-        st.info("Aguarde, a IA está montando seu roteiro dos sonhos...")
+        st.info("Aguarde, a IA está encntrando a melhor explicação para você...")
         resposta_ia = gerar_resposta_gemini(prompt_aluno)
 
         if resposta_ia:
-            st.markdown("### ✨ Sugestão de Roteiro da IA:")
+            st.markdown("### ✨ Retirando a dúvida:")
             st.markdown(resposta_ia)
         else:
-            st.error("Não foi possível gerar o roteiro. Verifique as mensagens acima ou tente novamente mais tarde.")
+            st.error("Não foi possível explicar. Verifique as mensagens acima ou tente novamente mais tarde.")
