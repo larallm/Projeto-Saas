@@ -6,32 +6,6 @@ import google.generativeai as genai
 api_key = "AIzaSyDNAWSkFfjtNWO8UZMbSWxyY1ymdWO-fYs"
 genai.configure(api_key=api_key)
 
-try:
-    # Utilizando o modelo especificado
-    model = genai.GenerativeModel("gemini-2.0-flash")
-except Exception as e:
-    st.error(f"Erro ao carregar o modelo Gemini 'gemini-2.0-flash': {e}")
-    st.info("Verifique se o nome do modelo está correto e se sua chave API tem acesso a ele.")
-    st.stop()
-
-def gerar_resposta_gemini(prompt_completo):
-    try:
-        response = model.generate_content(prompt_completo)
-
-        if response.parts:
-            return response.text
-        else:
-            if response.prompt_feedback:
-                st.warning(f"O prompt foi bloqueado. Razão: {response.prompt_feedback.block_reason}")
-                if response.prompt_feedback.safety_ratings:
-                    for rating in response.prompt_feedback.safety_ratings:
-                        st.caption(f"Categoria: {rating.category}, Probabilidade: {rating.probability}")
-            return "A IA não pôde gerar uma resposta para este prompt. Verifique as mensagens acima ou tente reformular seu pedido."
-    except Exception as e:
-        st.error(f"Erro ao gerar resposta da IA: {str(e)}")
-        if hasattr(e, 'message'): # Tenta obter mais detalhes do erro da API do Gemini
-            st.error(f"Detalhe da API Gemini: {e.message}")
-        return None
 
 # Configuração da página
 st.set_page_config(page_title="Minha App", page_icon="🚀")
@@ -121,6 +95,32 @@ st.sidebar.warning("⚠️ Atenção: verifique os dados")
 st.sidebar.error("❌ Erro encontrado")
 
 
+try:
+    # Utilizando o modelo especificado
+    model = genai.GenerativeModel("gemini-2.0-flash")
+except Exception as e:
+    st.error(f"Erro ao carregar o modelo Gemini 'gemini-2.0-flash': {e}")
+    st.info("Verifique se o nome do modelo está correto e se sua chave API tem acesso a ele.")
+    st.stop()
+
+def gerar_resposta_gemini(prompt_completo):
+    try:
+        response = model.generate_content(prompt_completo)
+
+        if response.parts:
+            return response.text
+        else:
+            if response.prompt_feedback:
+                st.warning(f"O prompt foi bloqueado. Razão: {response.prompt_feedback.block_reason}")
+                if response.prompt_feedback.safety_ratings:
+                    for rating in response.prompt_feedback.safety_ratings:
+                        st.caption(f"Categoria: {rating.category}, Probabilidade: {rating.probability}")
+            return "A IA não pôde gerar uma resposta para este prompt. Verifique as mensagens acima ou tente reformular seu pedido."
+    except Exception as e:
+        st.error(f"Erro ao gerar resposta da IA: {str(e)}")
+        if hasattr(e, 'message'): # Tenta obter mais detalhes do erro da API do Gemini
+            st.error(f"Detalhe da API Gemini: {e.message}")
+        return None
 
 # Título do aplicativo
 st.title("Exercício: Planejador de Roteiro de Viagem Básico com IA ✈️")
