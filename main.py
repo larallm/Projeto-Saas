@@ -1,7 +1,7 @@
 import streamlit as st
 import google.generativeai as genai
 
-api_key = "AIzaSyDNAWSkFfjtNWO8UZMbSWxyY1ymdWO-fYsgit"
+api_key = "AIzaSyB1Mrx7zqfdJhEU512IYFhaAKKdF0OO7KE"
 genai.configure(api_key=api_key)
 
 try:
@@ -32,19 +32,17 @@ def gerar_resposta_gemini(prompt_completo):
         return None
 
 # Sidebar para controles
-st.sidebar.title("Controles")
-st.sidebar.write("Use os controles abaixo:")
+st.sidebar.title("Informações do aplicativo")
+st.sidebar.write("Como usar?")
 
 # Widgets na sidebar
-opcao = st.sidebar.selectbox("Escolha uma opção:", ["Opção 1", "Opção 2", "Opção 3"])
-valor = st.sidebar.slider("Valor:", 0, 100, 50)
 ativo = st.sidebar.checkbox("Ativar recurso")
 
 # Exibir informações na sidebar
-st.sidebar.info("ℹ️ Informações importantes aqui")
-st.sidebar.success("✅ Operação realizada com sucesso")
-st.sidebar.warning("⚠️ Atenção: verifique os dados")
-st.sidebar.error("❌ Erro encontrado")
+st.sidebar.info("ℹ️ Preencha todas as informações pedidas, é importante!")
+st.sidebar.success("✅ Retire suas dúvidas")
+st.sidebar.warning("⚠️ Atenção: verifique se preencheu seus dados os dados")
+st.sidebar.error("❌ Erro na resposta")
 
 # Título do aplicativo
 st.title("Educa Ia 📚")
@@ -73,13 +71,11 @@ if "Fundamental" in turma:
         materias_opcoes = [
             "Língua Portuguesa", "Matemática", "Ciências", "História", "Geografia",
             "Arte", "Educação Física", "Música", "Inglês", "Teatro",
-            "Tecnologia Educacional", "Psicomotricidade Relacional", "Formação Pessoal e Social"
         ]
     elif 6 <= ano <= 9:
         materias_opcoes = [
             "Língua Portuguesa", "Matemática", "Ciências", "História", "Geografia",
             "Arte", "Educação Física", "Inglês", "Espanhol",
-            "Tecnologia Educacional", "Projetos", "Líder em Mim"
         ]
     else:
         materias_opcoes = []
@@ -106,11 +102,11 @@ if arquivo is not None:
     import pandas as pd
     df = pd.read_csv(arquivo)
     st.dataframe(df)
-if st.button("Clique aqui"):
-    st.write("Botão foi clicado!")
+
 
 aceito = st.checkbox("Eu aceito os termos")
-
+if st.button("Clique aqui"):
+    st.write("Você aceitou os termos!")
 
 duvida = st.text_area(
     "Digite sua dúvida:",
@@ -126,12 +122,13 @@ if st.button("Gerar um recurso para retirar duvida"):
         materias_str = ", ".join(materias)
 
         prompt_aluno = (
-            f"Escreva o nome do aluno '{nome}'.\n"
+            f"Escreva o nome do aluno: {nome}.\n"
             f"A sua idade é {idade}.\n"
             f"Seu turno é: {turno}.\n"
-            f"Sua turma é: '{turma}'.\n"
-            f"A materia ou as materias escolhidas foram: '{materias}'.\n"
+            f"Sua turma é: {turma}.\n"
+            f"A materia ou as materias escolhidas foram: {materias}.\n"
             f"Duvida do aluno '{duvida if duvida else 'Nenhuma dúvida inserida.'}'\n\n"
+            f"Faça uma saudação ao usuário "
             f"Com base nessas informações, por favor, dê uma explicação ao usuário "
             f"Pode ser um resumo geral da duvida. "
             f"Dê dicas de como o aluno pode estudar com base no turno dele. "
