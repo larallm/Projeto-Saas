@@ -31,6 +31,21 @@ def gerar_resposta_gemini(prompt_completo):
             st.error(f"Detalhe da API Gemini: {e.message}")
         return None
 
+# Sidebar para controles
+st.sidebar.title("Controles")
+st.sidebar.write("Use os controles abaixo:")
+
+# Widgets na sidebar
+opcao = st.sidebar.selectbox("Escolha uma opção:", ["Opção 1", "Opção 2", "Opção 3"])
+valor = st.sidebar.slider("Valor:", 0, 100, 50)
+ativo = st.sidebar.checkbox("Ativar recurso")
+
+# Exibir informações na sidebar
+st.sidebar.info("ℹ️ Informações importantes aqui")
+st.sidebar.success("✅ Operação realizada com sucesso")
+st.sidebar.warning("⚠️ Atenção: verifique os dados")
+st.sidebar.error("❌ Erro encontrado")
+
 # Título do aplicativo
 st.title("Exercício: Planejador de Roteiro de Viagem Básico com IA ✈️")
 st.markdown("Descreva sua viagem ideal e deixe a IA ajudar com o planejamento!")
