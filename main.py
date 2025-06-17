@@ -118,10 +118,12 @@ duvida = st.text_area(
 )
 
 if st.button("Gerar um recurso para retirar duvida"):
-    if not duvida:
-        st.warning("Por favor, informe a  materia.")
+    if not aceito:
+        st.warning("Você precisa aceitar os termos para continuar.")
+    elif not duvida:
+        st.warning("Por favor, informe a dúvida.")
     elif not materias:
-        st.warning("Por favor, selecione pelo menos uma materia.")
+        st.warning("Por favor, selecione pelo menos uma matéria.")
     else:
         materias_str = ", ".join(materias)
 
